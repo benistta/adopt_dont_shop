@@ -8,14 +8,27 @@
 
 <p>Status: <%= @application.status %></p>
 
-<h2> Who is this application for </h2>
 
+
+<% if @application.status == "In Progress" && @application.pets.count > 0 %>
+<h3>pets_list:</h3>
 <% @application.pets.each do |pet| %>
-<%= link_to pet.name, "/pet/#{pet.id}" %>
+ <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+ <% end %>
+<% elsif @application.status == "In Progress" && @application.pets.count == 0 %>
+  <p><%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
+    <%= f.label :search_for_pets_by_name %>
+    <%= f.text_field :search %>
+    <%= f.submit "Submit"%>
+    <% end %></p>
 <% end %>
 
-<%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
-<%= f.label :search %>
-<%= f.text_field :search %>
-<%= f.submit "Add a Pet to this application" %>
+
+
+<% @pets.each do |pet| %>
+ <%= form_with url: "/applications/#{@application.id}", method: :patch, local: true do |f| %>
+   <%= f.label pet.name %>
+   <%= hidden_field_tag(:pet_id, pet.id) %>
+   <%= f.submit "Adopt this pet" %>
+ <% end %>
 <% end %>
