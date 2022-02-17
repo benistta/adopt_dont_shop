@@ -15,6 +15,7 @@
 <% @application.pets.each do |pet| %>
  <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
  <% end %>
+
 <% elsif @application.status == "In Progress" && @application.pets.count == 0 %>
   <p><%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
     <%= f.label :search_for_pets_by_name %>
@@ -22,7 +23,6 @@
     <%= f.submit "Submit"%>
     <% end %></p>
 <% end %>
-
 
 
 <% @pets.each do |pet| %>
